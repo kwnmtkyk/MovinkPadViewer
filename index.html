@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10151d">
+  <title>Movink Board — 手書きを、そのまま教室へ。</title>
+<style>
+@charset "UTF-8";
+:root{color-scheme:dark;--bg:#10151d;--panel:#171e28;--line:#2a3543;--muted:#929fae;--text:#eef2f5;--mint:#b9f59b;--orange:#ffb06e;font-family:"Segoe UI","Yu Gothic UI","Meiryo",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text)}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;cursor:pointer;color:inherit}button:focus-visible,a:focus-visible,main:focus-visible{outline:2px solid var(--mint);outline-offset:4px}button:disabled{opacity:.35;cursor:not-allowed}button[hidden],[hidden]{display:none!important}#app{height:100dvh;min-height:520px;display:flex;flex-direction:column}.topbar{min-height:92px;padding:20px 32px;display:flex;align-items:center;gap:32px;border-bottom:1px solid var(--line);background:var(--bg)}.brand{display:flex;gap:12px;align-items:center;color:var(--text);text-decoration:none;font-size:21px;letter-spacing:-.6px;white-space:nowrap}.brand b{font-weight:400;color:var(--mint)}.brand small{display:block;font-size:9px;letter-spacing:2.8px;color:var(--muted);margin-top:4px}.mark{background:var(--mint);color:var(--bg);width:42px;height:42px;border-radius:12px;display:grid;place-content:center;position:relative;font-weight:800;font-size:26px}.mark span{position:absolute;right:4px;top:1px;font-size:15px}.connection{display:flex;gap:9px;align-items:center;color:var(--muted);font-size:12px}.dot{width:6px;height:6px;border-radius:50%;background:#667485}.dot.live{background:var(--mint);box-shadow:0 0 12px #b9f59544}.resolution{font-variant-numeric:tabular-nums;font-size:11px;color:var(--muted)}.top-actions{margin-left:auto;display:flex;gap:18px;align-items:center}.text-btn{background:none;border:0;font-size:12px;color:var(--muted);padding:9px}.text-btn:hover{color:white}.button{display:flex;justify-content:center;align-items:center;gap:26px;border:1px solid var(--line);border-radius:9px;background:var(--panel);padding:13px 20px;font-size:13px;font-weight:600}.button span{font-size:19px}.button:hover{border-color:#748268}.button.primary{background:var(--mint);color:#172219;border:none;padding:16px 24px;margin-top:28px;box-shadow:0 6px 25px #b9f59b0a}.button.primary:hover{background:#ccffb4}.button.small{padding:6px 14px;font-size:12px}main{position:relative;flex:1;min-height:0;margin:16px 24px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at 75% 45%,#1f2b34 0,transparent 60%),#131a23}.stage-label,.stage-bottom{position:absolute;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center;z-index:3;font-size:10px;letter-spacing:1.8px;color:#778695;pointer-events:none}.stage-label{top:21px}.stage-label span:last-child{letter-spacing:.5px}.stage-bottom{bottom:18px;letter-spacing:1px}.stage-bottom button{pointer-events:auto}.stage-bottom span:last-child{font-size:10px;letter-spacing:.5px}.welcome{height:100%;padding:72px 7% 55px;display:flex;align-items:flex-start;justify-content:center;flex-direction:column;background-image:linear-gradient(90deg,transparent 49.8%,#ffffff03 50%,transparent 50.2%);background-size:80px 80px}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--mint);display:flex;align-items:center;gap:9px}.eyebrow span{width:6px;height:6px;border-radius:50%;background:var(--mint)}h1{font-size:clamp(34px,4.4vw,64px);line-height:1.42;letter-spacing:-1.5px;font-weight:500;margin:20px 0 12px}h1 em{font-style:normal;color:var(--mint)}.welcome p{color:var(--muted);font-size:13px;line-height:1.9;margin:0}.welcome .subnote{font-size:10px;margin:10px 0 0}.steps{display:flex;gap:32px;list-style:none;padding:0;margin:32px 0 0}.steps li{display:flex;align-items:flex-start;gap:10px}.steps b{font-size:12px;color:var(--mint);font-weight:500}.steps span{font-size:10px;line-height:1.7;color:var(--muted)}#viewport{position:absolute;inset:0;overflow:hidden;background:#090d12;touch-action:none}#viewport:has(canvas[hidden]){visibility:hidden}#display{position:absolute;max-width:none;transform-origin:center}#grid{position:absolute;inset:0;pointer-events:none;z-index:1}#grid.thirds{background:linear-gradient(90deg,transparent calc(33.333% - .5px),#ffffff50 33.333%,transparent calc(33.333% + .5px),transparent calc(66.666% - .5px),#ffffff50 66.666%,transparent calc(66.666% + .5px)),linear-gradient(transparent calc(33.333% - .5px),#ffffff50 33.333%,transparent calc(33.333% + .5px),transparent calc(66.666% - .5px),#ffffff50 66.666%,transparent calc(66.666% + .5px))}#grid.cross{background:linear-gradient(90deg,transparent calc(50% - .5px),#ff6c6c90 50%,transparent calc(50% + .5px)),linear-gradient(transparent calc(50% - .5px),#ff6c6c90 50%,transparent calc(50% + .5px))}#pointer{position:absolute;width:20px;height:20px;border-radius:50%;background:#ff6049b0;box-shadow:0 0 0 7px #ff60492a;transform:translate(-50%,-50%);z-index:2;pointer-events:none}#paused{position:absolute;top:20px;left:20px;border-radius:30px;background:#1b2430dd;color:var(--orange);padding:8px 14px;font-size:12px;z-index:3}#curtain{position:absolute;inset:0;background:#10151d;z-index:4;display:grid;place-content:center;color:var(--muted);letter-spacing:3px;font-size:16px}#dock{min-height:108px;display:flex;justify-content:center;align-items:center;gap:16px;padding:14px 24px}.toolgroup{display:flex;align-items:center;gap:2px;border-right:1px solid var(--line);padding-right:16px}.toolgroup:last-child{border:0;padding:0}.toolgroup>button{border:1px solid transparent;border-radius:8px;background:transparent;min-width:58px;padding:9px 7px;display:flex;flex-direction:column;align-items:center;gap:6px;color:#b9c3d0;font-size:10px;white-space:nowrap}.toolgroup>button .symbol{font-size:23px;line-height:26px}.toolgroup>button:hover{background:#25303d}.toolgroup>button[aria-pressed=true]{background:#b9f59b15;border-color:#b9f59b50;color:var(--mint)}.toolgroup>button.capture{background:var(--mint);color:#19251c;margin-right:5px}.zoom{display:flex;flex-direction:column;gap:7px;align-items:center;font-size:10px;color:var(--muted);min-width:106px}.zoom div{display:flex;gap:5px;align-items:center}.zoom button{border:1px solid var(--line);border-radius:5px;background:transparent;width:26px;height:26px}.zoom output{font-size:11px;width:40px;text-align:center;color:var(--text);font-variant-numeric:tabular-nums}#toast{position:fixed;left:50%;bottom:125px;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:#263342;border:1px solid #43505d;padding:13px 20px;border-radius:8px;font-size:12px;z-index:30;max-width:90vw;transition:.2s}#toast.show{opacity:1;transform:translate(-50%,0)}dialog{width:min(620px,calc(100% - 32px));max-height:90dvh;padding:28px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:16px}dialog::backdrop{background:#000a;backdrop-filter:blur(5px)}.dialog-head{display:flex;justify-content:space-between;align-items:center}h2{font-size:22px;line-height:1.5;margin:12px 0 24px}.guide{padding-left:24px}.guide li{padding-left:6px;margin:18px 0}.guide b{font-size:14px}.guide p,.muted{color:var(--muted);font-size:12px;line-height:1.85}.notice{background:#b9f59b0c;border:1px solid #b9f59b25;padding:14px;color:#b9c5b6;font-size:11px;line-height:1.9;border-radius:8px}.shortcuts{display:grid;grid-template-columns:55px 1fr 55px 1fr;font-size:11px;gap:12px;margin-top:20px}.shortcuts dt{background:#293440;text-align:center;padding:3px;border-radius:4px}.shortcuts dd{margin:0;padding:3px}.presentation .topbar,.presentation #dock{display:none}.presentation main{margin:0;border:0;border-radius:0}.presentation .stage-label{display:none}.presentation #show-controls{background:#1b2531cc;border:1px solid #4a5867;border-radius:6px;color:white}.presentation .stage-bottom>span{visibility:hidden}.active .stage-label{display:none}.active #view-info{background:#10151dbb;border-radius:4px;padding:5px 7px;font-size:8px}.active main{background:#090d12}
+@media(min-width:1350px){.welcome{background-image:linear-gradient(90deg,transparent 49.8%,#ffffff03 50%,transparent 50.2%),radial-gradient(ellipse at 80% 50%,#b9f59b09,transparent 60%)}.welcome::after{content:'✎';position:absolute;right:15%;top:23%;font-size:240px;line-height:1;color:#b9f59b16;transform:rotate(-12deg);pointer-events:none}}
+@media(max-height:800px){.topbar{min-height:76px;padding:14px 24px}.welcome{padding-top:50px;padding-bottom:40px}h1{font-size:clamp(30px,4vw,49px);margin-top:14px}.steps{margin-top:20px}.button.primary{margin-top:20px}#dock{min-height:96px;padding-top:8px;padding-bottom:8px}}
+@media(max-width:1100px){#dock{gap:8px;padding-left:8px;padding-right:8px;flex-wrap:wrap}.toolgroup{padding-right:8px}.toolgroup>button{min-width:48px;padding:7px 5px;font-size:9px}.topbar{gap:18px}.resolution{display:none}.zoom{min-width:90px}.steps{gap:22px}}
+@media(max-width:760px){#app{min-height:640px}.topbar{padding:14px 16px;gap:12px}.brand{font-size:17px}.brand small{font-size:7px;letter-spacing:1.8px}.mark{width:35px;height:35px;font-size:22px}.connection{display:none}.top-actions{gap:4px}.top-actions #source{font-size:10px;padding:6px 10px}.top-actions #help{font-size:10px}main{margin:8px 10px 0}.stage-label,.stage-bottom{left:16px;right:16px}.stage-label span:last-child,.stage-bottom>span:last-child{display:none}.welcome{padding:42px 24px}.welcome p{font-size:11px}.steps{gap:14px;flex-wrap:wrap}.steps li{gap:6px}.steps span{font-size:9px}#dock{justify-content:center;gap:5px;padding:8px 4px}.toolgroup{padding-right:5px}.toolgroup>button{min-width:46px}.toolgroup:nth-child(2){border:0}.toolgroup:nth-child(3){border:0}.toolgroup:last-child{border:0}.shortcuts{grid-template-columns:55px 1fr}dialog{padding:20px}.stage-bottom{font-size:8px}.welcome h1{font-size:34px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+</style>
+
+</head>
+<body>
+  <div id="app">
+    <header class="topbar" id="topbar">
+      <a class="brand" href="./" aria-label="Movink Board ホーム"><span class="mark">M<span>↗</span></span><span>Movink <b>Board</b><small>CLASSROOM VIEWER</small></span></a>
+      <div class="connection"><span class="dot" id="dot"></span><span id="connection">接続待ち</span><span class="resolution" id="resolution"></span></div>
+      <div class="top-actions"><button id="help" class="text-btn">使い方</button><button id="source" class="button small">画面を選ぶ <span>↗</span></button><button id="stop" class="text-btn" hidden>切断</button></div>
+    </header>
+
+    <main id="stage" tabindex="0" aria-label="MovinkPadの表示画面">
+      <div class="stage-label"><span>LIVE CANVAS</span><span id="stage-hint">書くのは端末。映すのはここ。</span></div>
+      <div id="viewport"><canvas id="display" aria-label="取り込んだ端末の画面" hidden></canvas><div id="grid" aria-hidden="true"></div><div id="pointer" hidden></div><span id="paused" hidden>Ⅱ 静止中</span><span id="curtain" hidden>画面を隠しています</span></div>
+      <section class="welcome" id="welcome">
+        <div class="eyebrow"><span></span> FOR YOUR NEXT LESSON</div>
+        <h1>手書きを、<br><em>そのまま教室へ。</em></h1>
+        <p>MovinkPadで書いた図や数式を、大きな画面へ。<br>見せたいところを拡大して、説明の流れを止めずに。</p>
+        <button id="connect" class="button primary">MovinkPadの画面を選ぶ <span>↗</span></button>
+        <p class="subnote">PCのChrome / Edgeで使用します</p>
+        <ol class="steps"><li><b>01</b><span>USBで接続し<br>Movink Mirrorを起動</span></li><li><b>02</b><span>「ウィンドウ」から<br>MovinkPadを選択</span></li><li><b>03</b><span>端末でノートを開き<br>そのまま手書き</span></li></ol>
+      </section>
+      <div class="stage-bottom"><span id="view-info">WINDOW CAPTURE · LOCAL ONLY</span><button id="show-controls" class="text-btn" hidden>操作を表示</button><span>F 全画面 &nbsp; / &nbsp; ? ヘルプ</span></div>
+    </main>
+
+    <footer id="dock">
+      <div class="toolgroup"><button data-action="flipH" title="左右反転" aria-pressed="false"><span class="symbol">↔</span><span>左右反転</span></button><button data-action="flipV" title="天地反転" aria-pressed="false"><span class="symbol">↕</span><span>天地反転</span></button><button data-action="rotate" title="右に90度回転"><span class="symbol">↻</span><span>回転</span></button></div>
+      <div class="toolgroup"><button data-action="fit" aria-pressed="false"><span class="symbol">⛶</span><span id="fit-label">全体表示</span></button><div class="zoom"><span>拡大</span><div><button id="zoom-out" aria-label="縮小">−</button><output id="zoom-label">100%</output><button id="zoom-in" aria-label="拡大">＋</button></div></div></div>
+      <div class="toolgroup"><button data-action="grid"><span class="symbol">⊞</span><span>グリッド</span></button><button data-action="pointer" aria-pressed="false"><span class="symbol">⌖</span><span>ポインター</span></button><button data-action="freeze" aria-pressed="false"><span class="symbol" id="freeze-icon">Ⅱ</span><span id="freeze-label">静止</span></button><button data-action="curtain" aria-pressed="false"><span class="symbol">▧</span><span>画面を隠す</span></button></div>
+      <div class="toolgroup"><button data-action="capture" class="capture"><span class="symbol">◎</span><span>撮影</span></button><button data-action="fullscreen"><span class="symbol">⛶</span><span>全画面</span></button><button data-action="reset"><span class="symbol">⟲</span><span>リセット</span></button><button data-action="hide"><span class="symbol">⌄</span><span>操作を隠す</span></button></div>
+    </footer>
+    <video id="video" autoplay playsinline muted hidden></video>
+    <canvas id="frame" hidden></canvas>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <dialog id="help-dialog">
+    <div class="dialog-head"><span class="eyebrow">QUICK GUIDE</span><button id="close-help" class="text-btn" aria-label="閉じる">✕</button></div>
+    <h2>いつものノートを、授業の画面に。</h2>
+    <ol class="guide"><li><b>端末の画面をPCに表示</b><p>USB接続し、Movink Mirrorで「画面を映す」を押します。元の表示ウィンドウは全画面を解除しておくと選びやすくなります（Alt + F）。</p></li><li><b>このページで「画面を選ぶ」</b><p>ブラウザの選択画面で「ウィンドウ」を開き、<strong>MovinkPad-Classroom</strong> または <strong>MovinkPad - Classroom</strong> を選んで共有します。元のウィンドウは最小化しないでください。</p></li><li><b>ブラウザをプロジェクターへ</b><p>必要なら拡張ディスプレイ側に移動して全画面にします。書き込みはMovinkPadのノートアプリで行います。</p></li></ol>
+    <div class="notice">この版はPCに表示した端末画面を取り込みます。USBへ直接接続する機能はありません。音声は取り込みません。映像の外部送信・録画は行わず、「撮影」したときだけPNGを保存します。</div>
+    <dl class="shortcuts"><dt>F</dt><dd>全画面</dd><dt>Space</dt><dd>静止 / 再開</dd><dt>S</dt><dd>PNGを保存</dd><dt>B</dt><dd>画面を隠す / 戻す</dd><dt>H</dt><dd>操作表示</dd><dt>0</dt><dd>表示をリセット</dd></dl>
+    <p class="muted">拡大中は画面をドラッグして移動できます。ポインターはPCのマウス位置を示します。撮影画像には反転・回転が反映され、拡大・グリッド・ポインターは含まれません。</p>
+  </dialog>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const ui = { video: $('video'), display: $('display'), frame: $('frame'), stage: $('stage'), viewport: $('viewport') };
+const ctx = ui.display.getContext('2d');
+const raw = ui.frame.getContext('2d');
+const state = {stream:null, busy:false, flipH:false, flipV:false, rotation:0, cover:false, zoom:1, x:0, y:0, grid:0, pointer:false, frozen:false, curtain:false, controls:true, frameReady:false};
+let timer, wakeLock, drawId, drag;
+const activeTools = document.querySelectorAll('[data-action], #zoom-in, #zoom-out');
+
+function toast(text) {
+  $('toast').textContent = text;
+  $('toast').classList.add('show');
+  clearTimeout(timer);
+  timer = setTimeout(() => $('toast').classList.remove('show'), 3800);
+}
+function setControls() {
+  activeTools.forEach(button => {
+    button.disabled = !state.frameReady && !['fullscreen','hide','reset'].includes(button.dataset.action);
+  });
+  for (const [action, value] of Object.entries({flipH:state.flipH,flipV:state.flipV,fit:state.cover,pointer:state.pointer,freeze:state.frozen,curtain:state.curtain})) {
+    document.querySelector(`[data-action="${action}"]`).setAttribute('aria-pressed', String(value));
+  }
+  $('zoom-in').disabled = !state.frameReady || state.zoom >= 3;
+  $('zoom-out').disabled = !state.frameReady || state.zoom <= 1;
+  $('fit-label').textContent = state.cover ? '画面いっぱい' : '全体表示';
+  $('zoom-label').textContent = `${Math.round(state.zoom * 100)}%`;
+  $('freeze-label').textContent = state.frozen ? '再開' : '静止';
+  $('freeze-icon').textContent = state.frozen ? '▷' : 'Ⅱ';
+  $('paused').hidden = !state.frozen;
+  $('curtain').hidden = !state.curtain;
+  $('grid').className = ['', 'thirds', 'cross'][state.grid];
+  if (!state.pointer) $('pointer').hidden = true;
+}
+function layout() {
+  if (!state.frameReady) return;
+  const w = ui.display.width, h = ui.display.height;
+  const box = ui.viewport.getBoundingClientRect();
+  const scale = (state.cover ? Math.max(box.width/w,box.height/h) : Math.min(box.width/w,box.height/h)) * state.zoom;
+  const width = w*scale, height=h*scale;
+  state.x = Math.max(-Math.max(0,(width-box.width)/2), Math.min(Math.max(0,(width-box.width)/2),state.x));
+  state.y = Math.max(-Math.max(0,(height-box.height)/2), Math.min(Math.max(0,(height-box.height)/2),state.y));
+  Object.assign(ui.display.style,{width:`${width}px`,height:`${height}px`,left:`${(box.width-width)/2+state.x}px`,top:`${(box.height-height)/2+state.y}px`});
+  ui.viewport.style.cursor = state.zoom>1 || state.cover ? (drag?'grabbing':'grab') : 'default';
+}
+function render() {
+  if (!state.frameReady) return;
+  const w=ui.frame.width,h=ui.frame.height,swap=state.rotation%180!==0;
+  const dw=swap?h:w,dh=swap?w:h;
+  if(ui.display.width!==dw || ui.display.height!==dh){ui.display.width=dw;ui.display.height=dh;}
+  ctx.save();
+  ctx.clearRect(0,0,dw,dh);
+  ctx.translate(dw/2,dh/2);
+  ctx.scale(state.flipH?-1:1,state.flipV?-1:1);
+  ctx.rotate(state.rotation*Math.PI/180);
+  ctx.drawImage(ui.frame,-w/2,-h/2);
+  ctx.restore();
+  layout();
+}
+function draw() {
+  if (!state.stream) return;
+  if (!state.frozen && ui.video.readyState>=2 && ui.video.videoWidth) {
+    const w=ui.video.videoWidth,h=ui.video.videoHeight;
+    if(ui.frame.width!==w||ui.frame.height!==h){ui.frame.width=w;ui.frame.height=h;}
+    raw.drawImage(ui.video,0,0,w,h);
+    const first=!state.frameReady;
+    state.frameReady=true;
+    ui.display.hidden=false;
+    $('welcome').hidden=true;
+    $('resolution').textContent=`${w} × ${h}`;
+    render();
+    if(first) setControls();
+  }
+  drawId=requestAnimationFrame(draw);
+}
+async function acquireWakeLock(){
+  try {if(state.stream&&document.visibilityState==='visible'&&navigator.wakeLock) wakeLock=await navigator.wakeLock.request('screen');} catch { /* Optional: mirroring continues. */ }
+}
+function stop(showToast=true) {
+  const old=state.stream;
+  state.stream=null;
+  old?.getTracks().forEach(track=>track.stop());
+  cancelAnimationFrame(drawId);
+  ui.video.srcObject=null;
+  state.frameReady=false;state.frozen=false;state.curtain=false;
+  ui.display.hidden=true;
+  $('welcome').hidden=false;
+  $('stop').hidden=true;
+  $('dot').classList.remove('live');
+  $('connection').textContent='接続待ち';
+  $('resolution').textContent='';
+  $('app').classList.remove('active');
+  wakeLock?.release().catch(()=>{});wakeLock=null;
+  setControls();
+  if(showToast) toast('画面の取り込みを終了しました');
+}
+async function connect() {
+  if(state.busy)return;
+  if(!navigator.mediaDevices?.getDisplayMedia){toast('PCのChrome / Edgeから、HTTPSまたはlocalhostで開いてください');return;}
+  state.busy=true;
+  $('connect').disabled=$('source').disabled=true;
+  let stream;
+  try{
+    // Call directly from the click: capture requires a fresh user gesture.
+    stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:'window',frameRate:{ideal:30}},audio:false,selfBrowserSurface:'exclude',systemAudio:'exclude'});
+    const track=stream.getVideoTracks()[0];
+    if(!track)throw new Error('映像トラックがありません');
+    if(state.stream)stop(false);
+    state.stream=stream;
+    state.frozen=false;state.curtain=false;state.zoom=1;state.x=state.y=0;
+    ui.video.srcObject=stream;
+    track.addEventListener('ended',()=>{if(state.stream===stream)stop();},{once:true});
+    await ui.video.play();
+    if(state.stream!==stream)return;
+    $('stop').hidden=false;
+    $('dot').classList.add('live');
+    $('connection').textContent='表示中';
+    $('app').classList.add('active');
+    draw();setControls();acquireWakeLock();
+    toast('取り込みを開始しました。MovinkPadでノートアプリを開いてください');
+  }catch(error){
+    if(stream && state.stream===stream)stop(false);
+    else stream?.getTracks().forEach(track=>track.stop());
+    if(error.name==='NotAllowedError'||error.name==='AbortError')toast('画面選択をキャンセルしました。もう一度「画面を選ぶ」から接続できます');
+    else toast(`画面を取り込めません：${error.message}`);
+  }finally{state.busy=false;$('connect').disabled=$('source').disabled=false;}
+}
+function reset(){Object.assign(state,{flipH:false,flipV:false,rotation:0,cover:false,zoom:1,x:0,y:0,grid:0,pointer:false,frozen:false,curtain:false});render();setControls();toast('表示設定をリセットしました');}
+function zoom(delta){state.zoom=Math.max(1,Math.min(3,Math.round((state.zoom+delta)*100)/100));layout();setControls();}
+async function fullscreen(){try{if(document.fullscreenElement)await document.exitFullscreen();else await $('app').requestFullscreen();}catch{toast('全画面表示に切り替えられませんでした');}}
+function controls(){state.controls=!state.controls;$('app').classList.toggle('presentation',!state.controls);$('show-controls').hidden=state.controls;requestAnimationFrame(layout);}
+function capture(){
+  if(!state.frameReady)return;
+  if(state.curtain){toast('画像を保存するには「画面を隠す」を解除してください');return;}
+  // Snapshot the transformed image now, before asynchronous encoding.
+  const snapshot=document.createElement('canvas');snapshot.width=ui.display.width;snapshot.height=ui.display.height;snapshot.getContext('2d').drawImage(ui.display,0,0);
+  snapshot.toBlob(blob=>{
+    if(!blob){toast('画像を作成できませんでした');return;}
+    const stamp=new Date().toLocaleString('sv-SE').replace(/[-: ]/g,'');
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=`MovinkBoard_${stamp}.png`;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);toast('PNG画像を保存しました');
+  },'image/png');
+}
+const actions={
+  flipH(){state.flipH=!state.flipH;render();},flipV(){state.flipV=!state.flipV;render();},
+  rotate(){state.rotation=(state.rotation+90)%360;state.x=state.y=0;render();},
+  fit(){state.cover=!state.cover;state.x=state.y=0;layout();},grid(){state.grid=(state.grid+1)%3;},
+  pointer(){state.pointer=!state.pointer;},freeze(){state.frozen=!state.frozen;toast(state.frozen?'説明用に画面を静止しました。端末側の操作は続けられます':'ライブ表示に戻りました');},
+  curtain(){state.curtain=!state.curtain;},capture,fullscreen,reset,hide:controls
+};
+document.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>{actions[button.dataset.action]();setControls();}));
+$('connect').onclick=$('source').onclick=connect;
+$('stop').onclick=()=>stop();$('zoom-in').onclick=()=>zoom(.25);$('zoom-out').onclick=()=>zoom(-.25);$('show-controls').onclick=controls;
+$('help').onclick=()=>$('help-dialog').showModal();$('close-help').onclick=()=>$('help-dialog').close();
+ui.viewport.addEventListener('pointerdown',event=>{if(!state.frameReady||state.curtain)return;drag={px:event.clientX,py:event.clientY,x:state.x,y:state.y};ui.viewport.setPointerCapture(event.pointerId);layout();});
+ui.viewport.addEventListener('pointermove',event=>{
+  if(drag){state.x=drag.x+event.clientX-drag.px;state.y=drag.y+event.clientY-drag.py;layout();}
+  if(state.pointer&&state.frameReady&&!state.curtain){const box=ui.viewport.getBoundingClientRect();$('pointer').hidden=false;$('pointer').style.left=`${event.clientX-box.left}px`;$('pointer').style.top=`${event.clientY-box.top}px`;}
+});
+for(const name of ['pointerup','pointercancel','lostpointercapture'])ui.viewport.addEventListener(name,()=>{drag=null;layout();});
+ui.viewport.addEventListener('pointerleave',()=>{$('pointer').hidden=true;});
+ui.viewport.addEventListener('wheel',event=>{if(state.frameReady){event.preventDefault();zoom(event.deltaY<0?.25:-.25);}},{passive:false});
+new ResizeObserver(layout).observe(ui.viewport);
+document.addEventListener('fullscreenchange',layout);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')acquireWakeLock();});
+document.addEventListener('keydown',event=>{
+  if($('help-dialog').open||event.repeat||event.ctrlKey||event.altKey||event.metaKey||/INPUT|SELECT|TEXTAREA|BUTTON/.test(event.target.tagName))return;
+  const key=event.key.toLowerCase();
+  if(key==='f'){event.preventDefault();fullscreen();}else if(key==='h')controls();else if(key==='?')$('help-dialog').showModal();else if(key==='0')reset();
+  else if(state.frameReady){if(key===' '){event.preventDefault();actions.freeze();}else if(key==='s')capture();else if(key==='b')actions.curtain();setControls();}
+});
+window.addEventListener('pagehide',()=>stop(false));
+setControls();
+
+</script>
+</body>
+</html>
